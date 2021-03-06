@@ -1,0 +1,10 @@
+<html>
+<head>
+<title>Вывод на экран входящих параметров</title>
+</head>
+<body style="background-color: <?=$_POST['background']?>;">
+<?php
+echo htmlspecialchars($_POST['message']).htmlspecialchars($_POST['name']);
+?>
+</body>
+</html>
