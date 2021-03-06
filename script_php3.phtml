@@ -1,0 +1,45 @@
+<html>
+<head>
+<title>Вывод на экран входящих параметров</title>
+</head>
+<body>
+<?php
+$path=GetCWD()."\loadfiles";
+$postRes = $_POST['btn'];
+$action = explode("*", $postRes)[0];
+$fileName = explode("*", $postRes)[1];
+if(!file_exists($path))
+    die("<b>Пожалуйста, создайте папку <font color=red>".$path."</font> и <a href=&#63;> повторите попытку загрузить файл</a>.</b>");
+if(empty($_FILES['UserFile']['tmp_name']))
+{
+    echo "<form method=post enctype=multipart/form-data> Выберите файл: <input type=file name=UserFile> <input type=submit value=Отправить></form>";
+}
+elseif(file_exists($path."\\".$_FILES['UserFile']['name']))
+{
+    copy($_FILES['UserFile']['tmp_name'], $path."\\".$_FILES['UserFile']['name']."&&&tmp");
+    echo "<b>Файл с таким именем ужу существует</b>"."</br>"."<b>Выбрать другой файл или продолжть загрузку этого?</b>"."</br><form method=post enctype=multipart/form-data><input type=submit name=btn value=Продолжить_загрузку_файла*".$_FILES['UserFile']['name']."> <input type=submit name=Reset value=Новый_файл></form>";
+}
+elseif(!is_uploaded_file($_FILES['UserFile']['tmp_name']))
+    die("<b><font color=red>Файл не был загружен! Попробуйте <a href=&#63;>повторить попытку</a>!</font></b>");
+else
+{
+    if(@!copy($_FILES['UserFile']['tmp_name'], $path.chr(47).$_FILES['UserFile']['name']))
+        die("<b><font color=red>Файл не был загружен! Попробуйте <a href=&#63;>повторить попытку</a>!</font></b>");
+    else
+        die("<center><b>Файл \"<font color=red>".$_FILES['UserFile']['name']."\"</font> успешно загружен на сервер!</font></b></center>"."<hr>"."Тип файла:<b>".$_FILES['UserFile']['type']."</b><br>"."Размер файла:<b>".round($_FILES['UserFile']['size']/1024,2)."кб.</b>"."<hr><center><a href=&#63;>Загрузить ещё один файл! </a></center>");
+}
+if($action == 'Продолжить_загрузку_файла')
+{
+    if(!copy($path."\\".$fileName."&&&tmp",  $path."\\".$fileName))
+        die("<b><font color=red>Файл не был загружен! Попробуйте <a href=&#63;>повторить попытку</a>!</font></b> </br>".$_FILES['UserFile']['tmp_name']);
+    else
+        die("<center><b>Файл \"<font color=red>".$fileName."\"</font> успешно загружен и перезаписан на сервере!</font></b></center>");
+}
+elseif($action == 'Новый_файл')
+{
+    header("Refresh:5");
+}
+
+?>
+</body>
+</html>
