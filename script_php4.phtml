@@ -1,0 +1,109 @@
+<html>
+<head>
+<title>Калькулятор</title>
+</head>
+
+<body>
+<?php
+function show()
+{
+    echo "
+    <form method=post action=script_php4.phtml>
+    <table border=1 cellspacing=2 cellpadding=2>
+    <tr>
+    <td>Первое число: </td><td><input size=14
+    type=text name=first></td>
+    </tr>
+    <tr>
+    <td>Второе число: </td><td><input size=14
+    type=text name=second></td>
+    </tr>
+    <tr><td>
+    <select size=1 name=action>
+    <option value=sum>Сложить</option>
+    <option value=min>Вычесть</option>
+    <option value=umn>Умножить</option>
+    <option value=del>Разделить</option>
+    <option value=stepen>Возвести в степень</option>
+    <option value=procent>Вычисление процента</option>
+    <option value=root>Вычисление корня</option>
+    <option value=sin>Вычисление синуса</option>
+    <option value=cos>Вычисление косинуса</option>
+    <option value=tg>Вычисление тангенса</option>
+    </select></td>
+    <td><input type=submit value=Выполнить>
+    </td></tr>  
+    ";
+}
+?>
+
+
+<?php
+    function calc()
+    {
+        $action = $_POST['action'];
+        global $result; 
+        $first = $_POST['first']; 
+        $second = $_POST['second'];
+
+        if(!is_numeric($first) && ($action == "sin" || $action == "cos" || $action == "tg"))
+            exit("Данные в первом поле не введены или не являются числами");
+        elseif((!is_numeric($first) || !is_numeric($second)) && ($action != "sin" && $action != "cos" && $action != "tg"))
+            exit("Данные не введены или не являются числами");
+        
+        
+        switch($action)
+        {
+            case "sum":
+                $result = $first+$second;
+                break;
+            case "min":
+                $result = $first-$second;
+                break;
+            case "umn":
+                $result = $first*$second;
+                break;
+            case "del":
+                if (!$second)
+                {
+                    exit("Второе число не введено или равно нулю
+                    <br> <a href=script_php4.phtml>Назад</a>");
+                }
+                $result = $first/$second;
+                break;
+            case "stepen":
+                $result = $first**$second;
+                break;
+            case "procent":
+                $result = $first / 100 * $second;
+                break;
+            case "root":
+                $result = $first**($second * -1);
+                break;
+            case "sin":
+                $result = sin(deg2rad($first));
+                break;
+            case "cos":
+                $result = cos(deg2rad($first));
+                break;
+            case "tg":
+                $result = tan(deg2rad($first));
+                break; 
+        }
+    }
+    show();
+    calc();
+?>
+
+<tr><td>Результат:
+</td>
+<td>
+<div align="center">
+<?php
+echo "$result";
+?>
+</div>
+</td></tr>
+</table>
+</form>
+</body>
