@@ -33,6 +33,7 @@ if($action == 'Продолжить_загрузку_файла')
     if(!copy($path."\\".$fileName."&&&tmp",  $path."\\".$fileName))
         die("<b><font color=red>Файл не был загружен! Попробуйте <a href=&#63;>повторить попытку</a>!</font></b> </br>".$_FILES['UserFile']['tmp_name']);
     else
+        unlink($path."\\".$fileName."&&&tmp");
         die("<center><b>Файл \"<font color=red>".$fileName."\"</font> успешно загружен и перезаписан на сервере!</font></b></center>");
 }
 elseif($action == 'Новый_файл')
