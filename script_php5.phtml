@@ -1,0 +1,65 @@
+<html>
+<head>
+<title>Календарь</title>
+</head>
+<body>
+<?php
+    $monthdays=date("t");
+    $weeks=$monthdays /7;
+    $weeks=round($weeks,0);
+    $dayofweek=date("w");
+    $dayofmonth=date("j");
+    $dayofmonthlz=date("d");
+    $monthlz=date("n");
+    $year=date("Y");
+
+    $daysarray=array("","Пн","Вт","Ср","Чт","Пт","Сб","Вс");
+    $month = array("1"=>"Январь","2"=>"Февраль","3"=>"Март","4"=>"Апрель","5"=>"Май", "6"=>"Июнь", "7"=>"Июль","8"=>"Август","9"=>"Сентябрь","10"=>"Октябрь","11"=>"Ноябрь","12"=>"Декабрь");
+
+    for($m = 1; $m <= 12; $m++)
+    {
+        $numberfirstday =date("w",mktime(0,0,0,date($m),1,date("Y")));
+        echo "<font color=red><b>".$month[$m]."(".$year.")</b></font>";
+        echo "<table width=\"200\" border=\"0\"cellspacing=\"0\" cellpadding=\"5\">\n\t<tr>\n";
+
+        for ($i = 1; $i <= 7; $i++) {
+            if($i>5)
+            {
+                echo "\t\t<td><font color=\"#E4723A\">".$daysarray[$i]."</font></td>\n";
+            }
+            else
+            {
+                echo "\t\t<td>".$daysarray[$i]."</td>\n";
+            }
+        }
+        echo "\t</tr>\n\t<tr>\n";
+        $j = 1;
+        while ($j < $numberfirstday) 
+        {
+            echo "\t\t<td>&nbsp;</td>\n";
+            $j++;
+        }
+        
+        for ($i = 1; $i <= cal_days_in_month(CAL_GREGORIAN, $m, $year); $i++)
+        {
+            if($i==$dayofmonth && $month == $monthlz)
+            {
+                echo "\t\t<td bgcolor=\"#FF8040\"align=\"center\"><b>".$i."</b></td>\n";
+            }
+            else
+            {
+                echo "\t\t<td align=\"center\">".$i."</td>\n";
+            }
+
+            if (round($j/7)-$j/7==0)
+            {
+                echo "\t</tr>\n\t<tr>\n";
+            }
+            $j++;
+        }
+        echo "\t</tr>\n</table>\n";
+    }
+    
+?>
+</body>
+</html>
