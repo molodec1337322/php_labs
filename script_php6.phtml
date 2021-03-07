@@ -1,0 +1,60 @@
+<html>
+<head>
+<title><?php echo "dsgfdhd"; ?></title>
+</head>
+<body bgcolor=silver>
+<?php
+    $titles = array("Первый текст", "Второй текст", "Третий текст");
+    $currentTitleNum = -1;
+    $currentTitle = "rhgrhrfhj";
+    $link = htmlspecialchars($_GET['link']);
+    if($currentTitleNum == -1)
+    {
+        $currentTitle = "Стартовая страница";
+    }
+    else
+    {
+        $currentTitle = $titles[$currentTitleNum];
+    }
+
+    $file = "";
+    if ($link == -1)
+    {
+        $file = "";
+        $currentTitleNum = -1;
+    }
+    if ($link == 1) 
+    { 
+        $file = "script_php6_text_1.phtml"; 
+        $currentTitleNum = 0;
+    }
+    if ($link == 2) 
+    { 
+        $file = "script_php6_text_2.phtml"; 
+        $currentTitleNum = 1;
+    }
+    if ($link == 3) 
+    { 
+        $file = "script_php6_text_3.phtml"; 
+        $currentTitleNum = 2;
+    }
+
+    if ($file == "") 
+    { 
+        echo "
+        <h3>Пожалуйста, выберите текст:</h3>
+        <a href=script_php6.phtml?link=1>текст N1</a><br>
+        <a href=script_php6.phtml?link=2>текст N2</a><br>
+        <a href=script_php6.phtml?link=3>текст N3</a>
+        ";
+    }
+    else 
+    {
+        include($file);
+        if($link > 1) echo "<a href=script_php6.phtml?link=".($link-1).">Предыдущее</a> <b>|</b>";
+        echo "<a href=script_php6.phtml?link=-1>К оглавлению</a>";
+        if($link < 3)echo "<b>|</b> <a href=script_php6.phtml?link=".($link+1).">Следующее</a>";
+    }
+?>
+</body>
+</html>
